@@ -37,6 +37,18 @@ const navItems = [
 
 const experiences = [
   {
+    title: "Full Stack and AI Engineering Intern",
+    company: "PropApp Trading Pvt. Ltd",
+    location: "Caulfield, VIC",
+    period: "Sept 2026 – Present",
+    highlights: [
+      "Organising and transforming unstructured real estate customer data collected through websites and digital platforms into structured, usable datasets for analysis and business workflows",
+      "Analysing buyer and customer data using Python to identify patterns across customer preferences, locations, finance requirements, and property interests",
+      "Performing customer segmentation and clustering analysis to group buyers with similar behaviours and requirements, supporting targeted property recommendations and customer nurturing strategies",
+      "Developing AI agents integrated with Slack channels to support automated data collection, information extraction, data management, and internal workflow automation",
+    ],
+  },
+  {
     title: "Research Assistant",
     company: "Deakin University",
     location: "Burwood, VIC",
