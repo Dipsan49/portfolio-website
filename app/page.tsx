@@ -17,7 +17,6 @@ import {
   Copy,
   Sparkles,
   ShieldCheck,
-  Layers3,
   MapPin,
 } from "lucide-react";
 import {
@@ -29,8 +28,8 @@ import {
 } from "@/lib/portfolio";
 
 const links = [
-  ["Work", "projects"],
   ["Experience", "experience"],
+  ["Projects", "projects"],
   ["About", "about"],
   ["Toolkit", "skills"],
   ["Volunteering", "volunteering"],
@@ -57,6 +56,21 @@ function SectionHeading({
         {text && <p>{text}</p>}
       </div>
     </div>
+  );
+}
+
+function ResponsibilityList({ items }: { items: string[] }) {
+  return (
+    <ul className="responsibility-list">
+      {items.map((item) => (
+        <li key={item}>
+          <span className="responsibility-marker" aria-hidden="true">
+            <ArrowUpRight size={13} />
+          </span>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -131,11 +145,6 @@ function NeuralGraphic() {
           strokeWidth="2"
         />
       </svg>
-      <span className="diagram-label label-input">Curiosity in.</span>
-      <span className="diagram-label label-output">
-        Intelligence out. <ArrowUpRight size={13} />
-      </span>
-      <span className="diagram-caption">FIG. 01 — IDEAS, CONNECTED.</span>
     </div>
   );
 }
@@ -144,14 +153,7 @@ function ProjectVisual({ index }: { index: number }) {
   if (index === 0)
     return (
       <div className="project-visual tone-visual" aria-hidden="true">
-        <div className="visual-topline">
-          <span>
-            <Sparkles size={15} /> TONE STUDIO
-          </span>
-          <span>01 / 03</span>
-        </div>
         <div className="tone-sheet">
-          <div className="sheet-label">A LITTLE CLARITY GOES A LONG WAY.</div>
           <p>
             Good words.
             <br />
@@ -172,20 +174,12 @@ function ProjectVisual({ index }: { index: number }) {
             </span>
           </div>
         </div>
-        <span className="visual-footnote">LANGUAGE × AUTOMATION</span>
       </div>
     );
   if (index === 1)
     return (
       <div className="project-visual cluster-visual" aria-hidden="true">
-        <div className="visual-topline">
-          <span>
-            <Layers3 size={15} /> CUSTOMER INTELLIGENCE
-          </span>
-          <span>02 / 03</span>
-        </div>
         <div className="scatter">
-          <div className="scatter-y">CUSTOMER VALUE</div>
           {Array.from({ length: 42 }, (_, i) => (
             <i
               key={i}
@@ -202,17 +196,10 @@ function ProjectVisual({ index }: { index: number }) {
             <ArrowUpRight size={15} />
           </span>
         </div>
-        <span className="visual-footnote">DATA → SEGMENTS → DECISIONS</span>
       </div>
     );
   return (
     <div className="project-visual bank-visual" aria-hidden="true">
-      <div className="visual-topline">
-        <span>
-          <ShieldCheck size={15} /> SECUREBANK AI
-        </span>
-        <span>03 / 03</span>
-      </div>
       <div className="bank-orbits">
         <div />
         <div />
@@ -223,7 +210,6 @@ function ProjectVisual({ index }: { index: number }) {
         <br />
         <em>Security-first.</em>
       </div>
-      <span className="visual-footnote">CONVERSATION, WITH GUARDRAILS.</span>
     </div>
   );
 }
@@ -287,12 +273,12 @@ export default function Portfolio() {
           </div>
           <div className="hero-main">
             <div className="hero-copy">
-              <div className="eyebrow">AI ENGINEER / RESEARCHER / BUILDER</div>
+              <div className="eyebrow">AI Engineer & Researcher</div>
               <h1>
-                Intelligence,
+                Dipsan
                 <br />
                 <span className="applied">
-                  applied.
+                  Bhattarai.
                   <svg
                     viewBox="0 0 500 20"
                     preserveAspectRatio="none"
@@ -305,34 +291,17 @@ export default function Portfolio() {
               <div className="hero-intro">
                 <span className="intro-line" />
                 <p>
-                  I’m <strong>Dipsan Bhattarai.</strong> I turn complex data and
-                  ambitious ideas into AI systems that make everyday work a
-                  little smarter.
+                  I turn complex data and ambitious ideas into AI systems that
+                  make everyday work a little smarter.
                 </p>
               </div>
-              <a href="#projects" className="button button-dark">
-                Explore my work <ArrowDown size={17} />
+              <a href="#experience" className="button button-dark">
+                Explore my experience <ArrowDown size={17} />
               </a>
             </div>
             <div className="hero-art">
               <NeuralGraphic />
-              <div className="hero-art-note">
-                <span className="tiny-star">✳</span> A curious mind.
-                <br />
-                An engineering mindset.
-              </div>
             </div>
-          </div>
-          <div className="hero-bottom">
-            <span>FROM RESEARCH TO REAL-WORLD IMPACT</span>
-            <div>
-              <span>Python</span>
-              <span>Generative AI</span>
-              <span>Full-stack development</span>
-            </div>
-            <a href="#about" aria-label="Scroll to about">
-              <ArrowDown size={18} />
-            </a>
           </div>
         </section>
         <div className="current-strip">
@@ -345,80 +314,12 @@ export default function Portfolio() {
             <span className="strip-date">NOV 2026 — PRESENT</span>
           </div>
         </div>
-        <section id="projects" className="section wrap">
-          <SectionHeading
-            number="01"
-            label="SELECTED WORK"
-            title="Ideas into working things."
-            text="A few ways I connect AI, data and thoughtful engineering."
-          />
-          <div className="project-grid">
-            {projects.map((project, i) => (
-              <article key={project.title} className="project-card">
-                <ProjectVisual index={i} />
-                <div className="project-info">
-                  <span className="eyebrow">
-                    {
-                      [
-                        "WORKFLOW AUTOMATION",
-                        "APPLIED MACHINE LEARNING",
-                        "CONVERSATIONAL AI",
-                      ][i]
-                    }
-                  </span>
-                  <h3>
-                    {project.href ? (
-                      <a
-                        href={project.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {project.title}
-                        <ArrowUpRight size={23} />
-                      </a>
-                    ) : (
-                      project.title
-                    )}
-                  </h3>
-                  <p>{project.description}</p>
-                  <div className="tags">
-                    {project.tech.map((tech) => (
-                      <span key={tech}>{tech}</span>
-                    ))}
-                  </div>
-                  <details className="project-details">
-                    <summary>
-                      Inside the project <Plus size={14} />
-                    </summary>
-                    <ul>
-                      {project.highlights.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                    <p className="concept-note">
-                      Illustrative project visual above; not a product
-                      screenshot.
-                    </p>
-                  </details>
-                </div>
-              </article>
-            ))}
-          </div>
-          <a
-            className="text-link"
-            href="https://github.com/Dipsan49"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            More on GitHub <ArrowUpRight size={16} />
-          </a>
-        </section>
         <section id="experience" className="experience-section">
           <div className="wrap section">
             <SectionHeading
-              number="02"
-              label="THE JOURNEY"
-              title="Learning by building."
+              number="01"
+              label="EXPERIENCE"
+              title="Professional experience"
               text="Across energy, research, financial technology and business automation."
             />
             <div className="experience-list">
@@ -445,16 +346,67 @@ export default function Portfolio() {
                       <MapPin size={13} />
                       {exp.location}
                     </span>
-                    <ul>
-                      {exp.highlights.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
+                    <ResponsibilityList items={exp.highlights} />
                   </div>
                 </details>
               ))}
             </div>
           </div>
+        </section>
+        <section id="projects" className="section wrap">
+          <SectionHeading
+            number="02"
+            label="PROJECTS"
+            title="Selected projects"
+            text="A few ways I connect AI, data and thoughtful engineering."
+          />
+          <div className="project-grid">
+            {projects.map((project, i) => (
+              <article key={project.title} className="project-card">
+                <ProjectVisual index={i} />
+                <div className="project-info">
+                  <h3>
+                    {project.href ? (
+                      <a
+                        href={project.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {project.title}
+                        <ArrowUpRight size={23} />
+                      </a>
+                    ) : (
+                      project.title
+                    )}
+                  </h3>
+                  <p>{project.description}</p>
+                  <div className="tags">
+                    {project.tech.map((tech) => (
+                      <span key={tech}>{tech}</span>
+                    ))}
+                  </div>
+                  <details className="project-details">
+                    <summary>
+                      Inside the project <Plus size={14} />
+                    </summary>
+                    <ResponsibilityList items={project.highlights} />
+                    <p className="concept-note">
+                      Illustrative project visual above; not a product
+                      screenshot.
+                    </p>
+                  </details>
+                </div>
+              </article>
+            ))}
+          </div>
+          <a
+            className="text-link"
+            href="https://github.com/Dipsan49"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            More on GitHub <ArrowUpRight size={16} />
+          </a>
         </section>
         <section id="about" className="section wrap about-section">
           <div className="portrait-column">
@@ -466,20 +418,11 @@ export default function Portfolio() {
                 sizes="(max-width: 700px) 90vw, 38vw"
                 className="portrait-image"
               />
-              <span className="portrait-sticker">
-                Curiosity
-                <br />
-                is the constant. <span>↗</span>
-              </span>
-            </div>
-            <div className="portrait-caption">
-              <span>BASED IN MELBOURNE</span>
-              <span>ALWAYS LEARNING ↗</span>
             </div>
           </div>
           <div className="about-copy">
             <div className="eyebrow">
-              <span>03</span> / THE HUMAN BEHIND THE CODE
+              <span>03</span> / ABOUT ME
             </div>
             <h2>
               Technical by training.
@@ -532,14 +475,13 @@ export default function Portfolio() {
           <div className="wrap section">
             <SectionHeading
               number="04"
-              label="THE TOOLKIT"
-              title="Different tools. One mindset."
+              label="SKILLS"
+              title="Technical toolkit"
               text="Understand the problem. Choose the right tools. Make it work."
             />
             <div className="skills-grid">
-              {Object.entries(skills).map(([name, items], i) => (
+              {Object.entries(skills).map(([name, items]) => (
                 <div className="skill-group" key={name}>
-                  <span className="skill-number">/ 0{i + 1}</span>
                   <h3>{name}</h3>
                   <p>
                     {items.map((item, j) => (
@@ -558,7 +500,7 @@ export default function Portfolio() {
                   {certifications.length} certifications & training courses
                 </span>
                 <span>
-                  KEEPING THE CURIOSITY ALIVE <Plus size={18} />
+                  <Plus size={18} />
                 </span>
               </summary>
               <ul>
@@ -575,8 +517,8 @@ export default function Portfolio() {
         <section id="education" className="section wrap">
           <SectionHeading
             number="05"
-            label="FOUNDATIONS"
-            title="A work in progress. Always."
+            label="EDUCATION"
+            title="Education & learning"
           />
           <div className="education-grid">
             <article>
@@ -632,8 +574,8 @@ export default function Portfolio() {
           <div className="wrap section">
             <SectionHeading
               number="06"
-              label="GIVING BACK"
-              title="Beyond the day job."
+              label="VOLUNTEERING"
+              title="Volunteering & community"
               text="Good work also means showing up for people."
             />
             <div className="volunteer-grid">
@@ -643,11 +585,7 @@ export default function Portfolio() {
                   <h3>{exp.company}</h3>
                   <p className="volunteer-role">{exp.title}</p>
                   <span className="location">{exp.location}</span>
-                  <ul>
-                    {exp.highlights.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
+                  <ResponsibilityList items={exp.highlights} />
                 </article>
               ))}
             </div>
