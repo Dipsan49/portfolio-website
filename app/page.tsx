@@ -1,1036 +1,739 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import {
+  ArrowUpRight,
+  ArrowDown,
+  Plus,
+  Minus,
   Github,
   Linkedin,
   Mail,
-  MapPin,
-  Phone,
   Menu,
   X,
-  ChevronRight,
-  Brain,
-  Code2,
-  Database,
-  Cloud,
-  Award,
-  GraduationCap,
-  Briefcase,
-  Users,
-  Heart,
+  ArrowRight,
+  Check,
+  Copy,
   Sparkles,
-  Zap,
-  Rocket,
-  ExternalLink,
+  ShieldCheck,
+  Layers3,
+  MapPin,
 } from "lucide-react";
+import {
+  experiences,
+  volunteerExperiences,
+  projects,
+  skills,
+  certifications,
+} from "@/lib/portfolio";
 
-const navItems = [
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Education", href: "#education" },
-  { label: "Volunteering", href: "#volunteering" },
-  { label: "Contact", href: "#contact" },
+const links = [
+  ["Work", "projects"],
+  ["Experience", "experience"],
+  ["About", "about"],
+  ["Toolkit", "skills"],
+  ["Volunteering", "volunteering"],
 ];
 
-const experiences = [
-  {
-    title: "AI Development Intern",
-    company: "PowerPlus Energy",
-    location: "Scoresby, Melbourne",
-    period: "Nov 2026 – Present",
-    highlights: [
-      "Developing PowerPlus Energy AI Assist, a chatbot that helps the public and electricians find answers in a 1,000-page battery setup and installation manual using plain language",
-      "Building a Retrieval-Augmented Generation (RAG) pipeline with Qdrant to retrieve relevant manual passages, usually using a locally hosted language model served via Ollama",
-      "Developing a FastAPI backend served with Uvicorn for the chat service and a back-office interface for non-technical staff, improving response quality through prompt engineering and context-window management",
-    ],
-  },
-  {
-    title: "Casual Research Assistant",
-    company: "Deakin University",
-    location: "Burwood, VIC",
-    period: "Nov 2025 – Oct 2026",
-    highlights: [
-      "Conducting research on fine-tuning Large Language Models (LLMs) on edge devices for efficient on-device AI inference",
-      "Investigating Federated Learning frameworks for privacy-preserving, decentralised model training",
-      "Applying optimisation strategies to enhance model performance on resource-constrained hardware",
-      "Developed and tested Federated Learning systems in Python and PyTorch using Llama and T5, training models across devices without sharing raw data",
-      "Fine-tuned LLMs using Low-Rank Adaptation (LoRA) with spectral control to stabilise model updates, achieving improvements over baseline methods",
-      "Designed a multi-agent data visualisation framework with agents for analysis, chart creation and review, using primal-dual optimisation to select agents while penalising costly choices",
-    ],
-  },
-  {
-    title: "Software Engineer Intern",
-    company: "Deakin Applied Artificial Intelligence Initiative (A2I2)",
-    location: "Burwood, VIC",
-    period: "Nov 2025 – Feb 2026",
-    highlights: [
-      "Built an Email Tone Polisher with Microsoft PowerApps and Power Automate, designing automated workflows with low-code pipeline blocks",
-      "Developed user-facing interfaces in Microsoft PowerApps for non-technical staff",
-      "Utilised AI-assisted development tools including Claude Code, OpenAI Codex, and Vercel v0",
-      "Connected SharePoint storage and external services through REST APIs, validating integrations with Postman",
-      "Prototyped responsive interfaces with Claude Code/Cowork, OpenAI Codex and Vercel v0",
-    ],
-  },
-  {
-    title: "AI Developer",
-    company: "F1Soft International",
-    location: "Lalitpur, Nepal",
-    period: "Jan 2025 – Jun 2025",
-    highlights: [
-      "Developed a RAG chatbot for a multinational digital banking platform using Qwen, Qdrant and prompt engineering to answer from trusted FAQs and product documents",
-      "Built an intent classifier covering about 20 customer request types, achieving over 90% recall on every intent through confusion-matrix evaluation",
-      "Implemented Python and Django REST Framework APIs for mobile applications and the back-office system",
-      "Managed CI/CD pipelines via Jenkins, Rancher, and ArgoCD",
-    ],
-  },
-  {
-    title: "AI Intern",
-    company: "F1Soft International",
-    location: "Lalitpur, Nepal",
-    period: "Nov 2024 – Jan 2025",
-    highlights: [
-      "Developed a Python pipeline using PaddleOCR to extract multi-page Nepali bank statements with over 94% text extraction accuracy",
-      "Structured extracted text for fraud-detection analysis of payment descriptions and regular or irregular transaction amounts",
-      "Evaluated YOLO models for document detection and built Flask REST APIs and Streamlit interfaces for team testing and demonstrations",
-    ],
-  },
-];
+function SectionHeading({
+  number,
+  label,
+  title,
+  text,
+}: {
+  number: string;
+  label: string;
+  title: string;
+  text?: string;
+}) {
+  return (
+    <div className="section-heading">
+      <div className="eyebrow">
+        <span>{number}</span> / {label}
+      </div>
+      <div>
+        <h2>{title}</h2>
+        {text && <p>{text}</p>}
+      </div>
+    </div>
+  );
+}
 
-const volunteerExperiences = [
-  {
-    title: "Full Stack and AI Engineering Intern",
-    company: "PropApp Trading Pvt. Ltd",
-    location: "Caulfield, VIC",
-    period: "Sept 2026 – Present",
-    highlights: [
-      "Organising and transforming unstructured real estate customer data collected through websites and digital platforms into structured, usable datasets for analysis and business workflows",
-      "Analysing buyer and customer data using Python to identify patterns across customer preferences, locations, finance requirements, and property interests",
-      "Performing customer segmentation and clustering analysis to group buyers with similar behaviours and requirements, supporting targeted property recommendations and customer nurturing strategies",
-      "Developing AI agents integrated with Slack channels to support automated data collection, information extraction, data management, and internal workflow automation",
-    ],
-  },
-  {
-    title: "Thursday Trolley Volunteer",
-    company: "Deakin University Student Association (DUSA)",
-    location: "Geelong, VIC",
-    period: "Oct 2025 – Dec 2025",
-    highlights: [
-      "Handed out free snacks and drinks to students every Thursday evening in the Waterfront and Waurn Ponds campus libraries",
-      "Worked with fellow volunteers to set up, serve and pack down the trolley, return equipment and tidy leftover supplies",
-    ],
-  },
-];
+function NeuralGraphic() {
+  const nodes = Array.from({ length: 54 }, (_, i) => {
+    const angle = i * 2.399963;
+    const radius = 22 + Math.sqrt(i / 54) * 147;
+    return {
+      x: Number((220 + Math.cos(angle) * radius).toFixed(3)),
+      y: Number((220 + Math.sin(angle) * radius).toFixed(3)),
+    };
+  });
+  return (
+    <div className="neural-graphic" aria-hidden="true">
+      <svg viewBox="0 0 440 440" fill="none">
+        <defs>
+          <radialGradient id="neural-glow">
+            <stop stopColor="#d7f459" stopOpacity=".55" />
+            <stop offset="1" stopColor="#d7f459" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <circle cx="220" cy="220" r="215" fill="url(#neural-glow)" />
+        <g className="neural-orbit">
+          <ellipse
+            cx="220"
+            cy="220"
+            rx="195"
+            ry="71"
+            stroke="#1e241b"
+            strokeOpacity=".18"
+            transform="rotate(-35 220 220)"
+          />
+          <ellipse
+            cx="220"
+            cy="220"
+            rx="195"
+            ry="71"
+            stroke="#1e241b"
+            strokeOpacity=".18"
+            transform="rotate(35 220 220)"
+          />
+          {nodes.map((a, i) => (
+            <g key={i}>
+              {nodes
+                .slice(i + 1)
+                .map((b, j) =>
+                  Math.hypot(a.x - b.x, a.y - b.y) < 88 ? (
+                    <line
+                      key={j}
+                      x1={a.x}
+                      y1={a.y}
+                      x2={b.x}
+                      y2={b.y}
+                      stroke="#26301d"
+                      strokeOpacity=".21"
+                    />
+                  ) : null,
+                )}
+              <circle
+                cx={a.x}
+                cy={a.y}
+                r={i % 7 === 0 ? 5 : 2.5}
+                fill={i % 7 === 0 ? "#b4d833" : "#26301d"}
+              />
+            </g>
+          ))}
+        </g>
+        <circle cx="220" cy="220" r="31" fill="#1e241b" />
+        <path
+          d="M205 220h30m-15-15v30m-10-25 20 20m0-20-20 20"
+          stroke="#d7f459"
+          strokeWidth="2"
+        />
+      </svg>
+      <span className="diagram-label label-input">Curiosity in.</span>
+      <span className="diagram-label label-output">
+        Intelligence out. <ArrowUpRight size={13} />
+      </span>
+      <span className="diagram-caption">FIG. 01 — IDEAS, CONNECTED.</span>
+    </div>
+  );
+}
 
-const projects = [
-  {
-    title: "Email Tone Polisher",
-    href: "https://apps.powerapps.com/play/e/default-d02378ec-1688-46d5-8540-1c28b5f470f6/a/80bfbc97-141d-4a8b-ab57-90bc50b271fd?tenantId=d02378ec-1688-46d5-8540-1c28b5f470f6&hint=63ee61f8-aeda-42bd-81f8-0a12972e44b1&sourcetime=1785074189389",
-    description:
-      "Microsoft PowerApps application that rewrites emails according to configurable tones with admin interface for tone and prompt management backed by SharePoint.",
-    tech: ["PowerApps", "Power Automate", "SharePoint", "Vercel v0", "REST API"],
-    highlights: [
-      "Configurable tones (formal, professional, assertive)",
-      "Admin interface for prompt management",
-      "Automated backend workflow pipelines",
-    ],
-  },
-  {
-    title: "Customer Prioritisation System",
-    href: "https://github.com/Dipsan49/CustomerPrioritization",
-    description:
-      "Generative AI solution for e-commerce with novel Priority Value formula incorporating order frequency and customer spend with configurable weights.",
-    tech: ["Python", "K-Means Clustering", "Streamlit", "Generative AI"],
-    highlights: [
-      "Dynamic customer ranking by business value",
-      "K-Means clustering for customer segmentation",
-      "Interactive web application for real-time exploration",
-    ],
-  },
-  {
-    title: "SecureBank AI Chatbot",
-    description:
-      "Cloud-native banking chatbot on Google Cloud Platform with contextual accuracy and integrated security measures against adversarial inputs.",
-    tech: ["GCP", "Model Armour", "Python", "Cloud Functions"],
-    highlights: [
-      "Secure, contextual query handling",
-      "Protection against prompt injection",
-      "Full-stack cloud deployment",
-    ],
-  },
-];
-
-const skills = {
-  Languages: ["Python", "SQL", "Java", "JavaScript", "C/C++"],
-  Frameworks: ["Django REST", "FastAPI", "Uvicorn", "Flask", "Streamlit", "PyTorch", "pandas", "NumPy", "LangChain", "LangFuse"],
-  "AI Tools": ["Claude Code/Cowork", "OpenAI Codex", "Vercel v0", "Bolt.dev", "Ollama"],
-  "Cloud & DevOps": ["Microsoft Azure", "GCP", "Rancher", "Jenkins", "ArgoCD"],
-  "AI & Machine Learning": ["Machine Learning", "Generative AI", "RAG", "LLM Fine-tuning", "LoRA", "Federated Learning", "PaddleOCR", "YOLO"],
-  Databases: ["MySQL", "PostgreSQL", "Redis", "Qdrant"],
-  Platforms: ["Power Automate", "PowerApps", "Git/GitHub/GitLab", "Postman", "Figma", "Agile/Scrum"],
-};
-
-const certifications = [
-  "Figma Essential Training – LinkedIn Learning · Aug 2026",
-  "Microsoft Certified: Azure AI Fundamentals (Exam AI-901) · May 2026",
-  "Machine Learning Specialization – DeepLearning.AI / Stanford · Jan 2024",
-  "Java Development on Oracle Cloud – Oracle · Sept 2023",
-  "Google Cloud Fundamentals: Core Infrastructure · July 2022",
-  "High Performance Coding Training – Iamneo",
-  "MFL Coding Bootcamp – MFL EduClub",
-  "Ethical Hacking Training – Laba Institute",
-];
+function ProjectVisual({ index }: { index: number }) {
+  if (index === 0)
+    return (
+      <div className="project-visual tone-visual" aria-hidden="true">
+        <div className="visual-topline">
+          <span>
+            <Sparkles size={15} /> TONE STUDIO
+          </span>
+          <span>01 / 03</span>
+        </div>
+        <div className="tone-sheet">
+          <div className="sheet-label">A LITTLE CLARITY GOES A LONG WAY.</div>
+          <p>
+            Good words.
+            <br />
+            <em>Better connections.</em>
+          </p>
+          <div className="tone-options">
+            <span>Formal</span>
+            <span className="selected">
+              Professional <Check size={11} />
+            </span>
+            <span>Assertive</span>
+          </div>
+          <div className="tone-transform">
+            <span>Draft</span>
+            <ArrowRight size={17} />
+            <span>
+              Polished <Sparkles size={12} />
+            </span>
+          </div>
+        </div>
+        <span className="visual-footnote">LANGUAGE × AUTOMATION</span>
+      </div>
+    );
+  if (index === 1)
+    return (
+      <div className="project-visual cluster-visual" aria-hidden="true">
+        <div className="visual-topline">
+          <span>
+            <Layers3 size={15} /> CUSTOMER INTELLIGENCE
+          </span>
+          <span>02 / 03</span>
+        </div>
+        <div className="scatter">
+          <div className="scatter-y">CUSTOMER VALUE</div>
+          {Array.from({ length: 42 }, (_, i) => (
+            <i
+              key={i}
+              style={{
+                left: `${15 + ((i * 31) % 70)}%`,
+                bottom: `${12 + ((i * 17) % 73)}%`,
+                background:
+                  i % 3 === 0 ? "#d6ee98" : i % 3 === 1 ? "#ad9cde" : "#e6a47b",
+              }}
+            />
+          ))}
+          <span className="cluster-callout">
+            Find the patterns.
+            <ArrowUpRight size={15} />
+          </span>
+        </div>
+        <span className="visual-footnote">DATA → SEGMENTS → DECISIONS</span>
+      </div>
+    );
+  return (
+    <div className="project-visual bank-visual" aria-hidden="true">
+      <div className="visual-topline">
+        <span>
+          <ShieldCheck size={15} /> SECUREBANK AI
+        </span>
+        <span>03 / 03</span>
+      </div>
+      <div className="bank-orbits">
+        <div />
+        <div />
+        <ShieldCheck size={52} strokeWidth={1} />
+      </div>
+      <div className="bank-caption">
+        Context-aware.
+        <br />
+        <em>Security-first.</em>
+      </div>
+      <span className="visual-footnote">CONVERSATION, WITH GUARDRAILS.</span>
+    </div>
+  );
+}
 
 export default function Portfolio() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText("dipsanbhattarai7@gmail.com");
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2500);
+    } catch {
+      window.location.href = "mailto:dipsanbhattarai7@gmail.com";
+    }
+  }
   return (
-    <div className="min-h-screen bg-background overflow-hidden">
-      {/* Animated Background */}
-      <div className="fixed inset-0 pointer-events-none">
-        {/* Gradient orbs */}
-        <div 
-          className="absolute w-[600px] h-[600px] rounded-full opacity-20 blur-3xl transition-all duration-1000 ease-out"
-          style={{
-            background: "radial-gradient(circle, oklch(0.75 0.15 175) 0%, transparent 70%)",
-            left: mousePosition.x - 300,
-            top: mousePosition.y - 300,
-          }}
-        />
-        <div className="absolute top-1/4 -right-32 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl" />
-        
-        {/* Grid pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `linear-gradient(oklch(0.75 0.15 175) 1px, transparent 1px), linear-gradient(90deg, oklch(0.75 0.15 175) 1px, transparent 1px)`,
-            backgroundSize: "60px 60px",
-          }}
-        />
-      </div>
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-xl border-b border-border/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <motion.a
-              href="#"
-              className="text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              DB
-            </motion.a>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-4 lg:gap-8">
-              {navItems.map((item, index) => (
-                <motion.a
-                  key={item.href}
-                  href={item.href}
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  {item.label}
-                </motion.a>
-              ))}
-
+    <>
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      <header className="site-header">
+        <a href="#" className="wordmark" aria-label="Dipsan Bhattarai home">
+          dipsan<span>✳</span>
+        </a>
+        <nav
+          className={menuOpen ? "main-nav is-open" : "main-nav"}
+          aria-label="Main navigation"
+        >
+          {links.map(([name, id]) => (
+            <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>
+              {name}
+            </a>
+          ))}
+          <a
+            href="#contact"
+            className="nav-contact"
+            onClick={() => setMenuOpen(false)}
+          >
+            Let’s talk <ArrowUpRight size={15} />
+          </a>
+        </nav>
+        <button
+          className="menu-toggle"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <X /> : <Menu />}
+        </button>
+      </header>
+      <main id="main">
+        <section className="hero wrap">
+          <div className="hero-meta">
+            <span>
+              <i className="status-dot" /> OPEN TO GRADUATE OPPORTUNITIES
+            </span>
+            <span>
+              MELBOURNE, AUSTRALIA <span className="tiny-star">✳</span>
+            </span>
+          </div>
+          <div className="hero-main">
+            <div className="hero-copy">
+              <div className="eyebrow">AI ENGINEER / RESEARCHER / BUILDER</div>
+              <h1>
+                Intelligence,
+                <br />
+                <span className="applied">
+                  applied.
+                  <svg
+                    viewBox="0 0 500 20"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    <path d="M3 13Q230-5 496 8" />
+                  </svg>
+                </span>
+              </h1>
+              <div className="hero-intro">
+                <span className="intro-line" />
+                <p>
+                  I’m <strong>Dipsan Bhattarai.</strong> I turn complex data and
+                  ambitious ideas into AI systems that make everyday work a
+                  little smarter.
+                </p>
+              </div>
+              <a href="#projects" className="button button-dark">
+                Explore my work <ArrowDown size={17} />
+              </a>
             </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2 text-foreground"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            <div className="hero-art">
+              <NeuralGraphic />
+              <div className="hero-art-note">
+                <span className="tiny-star">✳</span> A curious mind.
+                <br />
+                An engineering mindset.
+              </div>
+            </div>
+          </div>
+          <div className="hero-bottom">
+            <span>FROM RESEARCH TO REAL-WORLD IMPACT</span>
+            <div>
+              <span>Python</span>
+              <span>Generative AI</span>
+              <span>Full-stack development</span>
+            </div>
+            <a href="#about" aria-label="Scroll to about">
+              <ArrowDown size={18} />
+            </a>
+          </div>
+        </section>
+        <div className="current-strip">
+          <div className="wrap">
+            <span className="eyebrow">CURRENTLY BUILDING</span>
+            <p>
+              Making battery knowledge conversational <ArrowUpRight size={17} />
+              <strong>PowerPlus Energy</strong>
+            </p>
+            <span className="strip-date">NOV 2026 — PRESENT</span>
           </div>
         </div>
-
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-card border-b border-border"
-            >
-              <div className="px-4 py-4 flex flex-col gap-4">
-                {navItems.map((item) => (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {item.label}
-                  </a>
-                ))}
-
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-
-      {/* Hero Section */}
-      <section className="min-h-screen flex items-center pt-16 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
-            {/* Profile Image */}
-            <motion.div
-              className="flex-shrink-0"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="relative">
-                <div className="absolute -inset-3 bg-gradient-to-r from-primary via-primary/50 to-primary/30 rounded-2xl blur-xl opacity-60" />
-                <div className="relative w-44 h-52 sm:w-52 sm:h-60 lg:w-64 lg:h-72 rounded-2xl overflow-hidden border-2 border-primary/20 shadow-2xl">
-                  <Image
-                    src="/images/dipsan-profile-dark.jpg"
-                    alt="Dipsan Bhattarai"
-                    fill
-                    className="object-cover object-top"
-                    priority
-                  />
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Main Info */}
-            <div className="flex-1 text-center lg:text-left">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4 text-balance">
-                  Dipsan Bhattarai
-                </h1>
-                <h2 className="text-xl sm:text-2xl bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent font-semibold mb-6">
-                  AI Engineer & Researcher
-                </h2>
-              </motion.div>
-
-              <motion.p
-                className="text-muted-foreground leading-relaxed mb-8 max-w-xl text-pretty text-lg mx-auto lg:mx-0"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-              >
-                Computer Science graduate pursuing{" "}
-                <span className="text-primary font-medium">
-                  Master of Applied Artificial Intelligence
-                </span>{" "}
-                at Deakin University, with nearly two years of hands-on experience building AI and data solutions across finance, research and business automation.
-              </motion.p>
-
-              <motion.div
-                className="flex flex-wrap gap-4 mb-8 justify-center lg:justify-start"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-              >
-                <a
-                  href="#contact"
-                  className="group relative flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-medium overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-primary/25"
-                >
-                  <span className="relative z-10 flex items-center gap-2">
-                    Get in Touch
-                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        <section id="projects" className="section wrap">
+          <SectionHeading
+            number="01"
+            label="SELECTED WORK"
+            title="Ideas into working things."
+            text="A few ways I connect AI, data and thoughtful engineering."
+          />
+          <div className="project-grid">
+            {projects.map((project, i) => (
+              <article key={project.title} className="project-card">
+                <ProjectVisual index={i} />
+                <div className="project-info">
+                  <span className="eyebrow">
+                    {
+                      [
+                        "WORKFLOW AUTOMATION",
+                        "APPLIED MACHINE LEARNING",
+                        "CONVERSATIONAL AI",
+                      ][i]
+                    }
                   </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/80 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
-                <a
-                  href="#projects"
-                  className="flex items-center gap-2 px-6 py-3 border border-border text-foreground rounded-xl font-medium hover:border-primary hover:text-primary hover:bg-primary/5 transition-all duration-300"
-                >
-                  <Rocket className="w-4 h-4" />
-                  View Projects
-                </a>
-              </motion.div>
-
-              <motion.div
-                className="flex items-center gap-4 justify-center lg:justify-start"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-              >
-                <a
-                  href="https://github.com/Dipsan49"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 bg-card border border-border rounded-xl text-muted-foreground hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
-                  aria-label="GitHub"
-                >
-                  <Github className="w-5 h-5" />
-                </a>
-                <a
-                  href="https://linkedin.com/in/dipsanbhattarai"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 bg-card border border-border rounded-xl text-muted-foreground hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="w-5 h-5" />
-                </a>
-                <a
-                  href="mailto:dipsanbhattarai7@gmail.com"
-                  className="p-3 bg-card border border-border rounded-xl text-muted-foreground hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
-                  aria-label="Email"
-                >
-                  <Mail className="w-5 h-5" />
-                </a>
-              </motion.div>
-            </div>
-          </div>
-
-          {/* Quick Stats - Below Hero Content */}
-          <motion.div
-            className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            {[
-              { icon: Brain, title: "LLMs", desc: "Fine-tuning & Edge AI" },
-              { icon: Code2, title: "Full Stack", desc: "Python, Django, React" },
-              { icon: Database, title: "ML/DL", desc: "PyTorch, LangChain" },
-              { icon: Cloud, title: "Cloud", desc: "Azure, GCP, DevOps" },
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                className="group p-5 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 + index * 0.1 }}
-                whileHover={{ y: -4 }}
-              >
-                <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
-                  <item.icon className="w-5 h-5 text-primary" />
-                </div>
-                <h3 className="text-lg font-bold text-foreground mb-1">{item.title}</h3>
-                <p className="text-xs text-muted-foreground">{item.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section id="about" className="py-24 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center gap-4 mb-12">
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
-              <h2 className="text-3xl font-bold text-foreground flex items-center gap-3">
-                <Zap className="w-6 h-6 text-primary" />
-                About Me
-              </h2>
-              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
-            </div>
-
-            <div className="grid lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 space-y-6">
-                <p className="text-muted-foreground leading-relaxed text-lg text-pretty">
-                  I am a Computer Science graduate currently pursuing my Master of Applied
-                  Artificial Intelligence (Professional) at Deakin University. With nearly two years
-                  of hands-on experience across finance, research and business automation, I bring
-                  strong analytical thinking, problem-solving skills and a collaborative mindset.
-                </p>
-                <p className="text-muted-foreground leading-relaxed text-lg text-pretty">
-                  My research experience includes{" "}
-                  <span className="text-primary font-medium">
-                    fine-tuning Large Language Models on edge devices
-                  </span>{" "}
-                  and investigating{" "}
-                  <span className="text-primary font-medium">Federated Learning frameworks</span>{" "}
-                  for privacy-preserving, decentralised model training. I now develop a RAG-powered AI assistant at PowerPlus Energy to make battery installation guidance easier to access.
-                </p>
-                <p className="text-muted-foreground leading-relaxed text-lg text-pretty">
-                  I am seeking a graduate role in software engineering, AI or data where I can
-                  build intelligent systems, improve processes and deliver meaningful results.
-                </p>
-                <div className="flex flex-wrap gap-3 pt-4">
-                  {["Machine Learning", "Deep Learning", "NLP", "Computer Vision", "Edge AI"].map((tag, i) => (
-                    <motion.span 
-                      key={tag}
-                      className="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium border border-primary/20"
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: i * 0.1 }}
-                      viewport={{ once: true }}
-                    >
-                      {tag}
-                    </motion.span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <motion.div 
-                  className="p-5 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/30 transition-all duration-300"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                      <MapPin className="w-5 h-5 text-primary" />
-                    </div>
-                    <span className="text-foreground font-semibold">Location</span>
-                  </div>
-                  <p className="text-muted-foreground pl-13">Melbourne, VIC, Australia</p>
-                </motion.div>
-                <motion.div 
-                  className="p-5 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/30 transition-all duration-300"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                      <Award className="w-5 h-5 text-primary" />
-                    </div>
-                    <span className="text-foreground font-semibold">Certifications</span>
-                  </div>
-                  <p className="text-muted-foreground pl-13">{certifications.length} Certifications & Training Courses</p>
-                </motion.div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Experience Section */}
-      <section id="experience" className="py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center gap-4 mb-16">
-              <Briefcase className="w-6 h-6 text-primary" />
-              <h2 className="text-3xl font-bold text-foreground">Professional Experience</h2>
-            </div>
-
-            <div className="relative">
-              {/* Timeline line */}
-              <div className="absolute left-0 md:left-1/2 transform md:-translate-x-px top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent hidden md:block" />
-
-              <div className="space-y-12">
-                {experiences.map((exp, index) => (
-                  <motion.div
-                    key={index}
-                    className={`relative md:w-1/2 ${
-                      index % 2 === 0 ? "md:pr-12" : "md:pl-12 md:ml-auto"
-                    }`}
-                    initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                  >
-                    {/* Timeline dot */}
-                    <div
-                      className={`hidden md:flex absolute top-0 w-5 h-5 bg-background border-2 border-primary rounded-full items-center justify-center ${
-                        index % 2 === 0 ? "right-0 translate-x-1/2 -mr-0.5" : "left-0 -translate-x-1/2 -ml-0.5"
-                      }`}
-                    >
-                      <div className="w-2 h-2 bg-primary rounded-full" />
-                    </div>
-
-                    <div className="p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
-                      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                        <span className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
-                          {exp.period}
-                        </span>
-                        <span className="text-xs text-muted-foreground flex items-center gap-1">
-                          <MapPin className="w-3 h-3" />
-                          {exp.location}
-                        </span>
-                      </div>
-                      <h3 className="text-xl font-bold text-foreground mb-1">{exp.title}</h3>
-                      <p className="text-primary font-semibold text-sm mb-4">{exp.company}</p>
-                      <ul className="space-y-2">
-                        {exp.highlights.map((highlight, hIndex) => (
-                          <li key={hIndex} className="flex gap-3 text-sm text-muted-foreground">
-                            <ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                            <span>{highlight}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects" className="py-24 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center gap-4 mb-16">
-              <Code2 className="w-6 h-6 text-primary" />
-              <h2 className="text-3xl font-bold text-foreground">Featured Projects</h2>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projects.map((project, index) => (
-                <motion.div
-                  key={index}
-                  className="group p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/50 transition-all duration-500"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/5 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-primary/10 transition-all duration-300">
-                      <Brain className="w-6 h-6 text-primary" />
-                    </div>
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">
+                  <h3>
                     {project.href ? (
                       <a
                         href={project.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group/title inline-flex items-center gap-2 cursor-pointer transition-colors hover:text-primary hover:underline underline-offset-4"
                       >
                         {project.title}
-                        <ExternalLink className="w-4 h-4 transition-transform group-hover/title:translate-x-0.5 group-hover/title:-translate-y-0.5" />
+                        <ArrowUpRight size={23} />
                       </a>
                     ) : (
-                      <span className="group-hover:text-primary transition-colors">
-                        {project.title}
-                      </span>
+                      project.title
                     )}
                   </h3>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-3 leading-relaxed">
-                    {project.description}
-                  </p>
-                  <ul className="space-y-2 mb-5">
-                    {project.highlights.map((highlight, hIndex) => (
-                      <li
-                        key={hIndex}
-                        className="flex items-center gap-2 text-xs text-muted-foreground"
-                      >
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full" />
-                        {highlight}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((tech, tIndex) => (
-                      <span
-                        key={tIndex}
-                        className="px-2.5 py-1 bg-secondary/50 text-xs text-secondary-foreground rounded-lg font-medium"
-                      >
-                        {tech}
-                      </span>
+                  <p>{project.description}</p>
+                  <div className="tags">
+                    {project.tech.map((tech) => (
+                      <span key={tech}>{tech}</span>
                     ))}
                   </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Skills Section */}
-      <section id="skills" className="py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center gap-4 mb-16">
-              <Database className="w-6 h-6 text-primary" />
-              <h2 className="text-3xl font-bold text-foreground">Technical Skills</h2>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Object.entries(skills).map(([category, items], index) => (
-                <motion.div
-                  key={category}
-                  className="p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/30 transition-all duration-300"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <h3 className="text-lg font-bold text-primary mb-5">{category}</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {items.map((skill, sIndex) => (
-                      <motion.span
-                        key={sIndex}
-                        className="px-3 py-2 bg-secondary/50 text-secondary-foreground rounded-xl text-sm hover:bg-primary/10 hover:text-primary transition-all duration-300 cursor-default border border-transparent hover:border-primary/20"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        {skill}
-                      </motion.span>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Certifications */}
-            <motion.div
-              className="mt-12 p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                  <Award className="w-5 h-5 text-primary" />
+                  <details className="project-details">
+                    <summary>
+                      Inside the project <Plus size={14} />
+                    </summary>
+                    <ul>
+                      {project.highlights.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                    <p className="concept-note">
+                      Illustrative project visual above; not a product
+                      screenshot.
+                    </p>
+                  </details>
                 </div>
-                <h3 className="text-xl font-bold text-foreground">Certifications & Training</h3>
-              </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {certifications.map((cert, index) => (
-                  <motion.div 
-                    key={index} 
-                    className="flex items-start gap-3 p-3 rounded-xl hover:bg-primary/5 transition-colors"
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    viewport={{ once: true }}
-                  >
-                    <ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                    <span className="text-sm text-muted-foreground">{cert}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Education Section */}
-      <section id="education" className="py-24 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center gap-4 mb-16">
-              <GraduationCap className="w-6 h-6 text-primary" />
-              <h2 className="text-3xl font-bold text-foreground">Education</h2>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              <motion.div
-                className="p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 relative overflow-hidden"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -4 }}
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl" />
-                <span className="inline-block text-xs font-semibold text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
-                  Expected completion: May 2027
-                </span>
-                <h3 className="text-xl font-bold text-foreground mt-4 mb-2">
-                  Master of Applied Artificial Intelligence (Professional)
-                </h3>
-                <p className="text-primary font-semibold text-sm mb-4">
-                  Deakin University | Waurn Ponds, Geelong, VIC
-                </p>
-                <div className="space-y-3">
-                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Relevant Coursework</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Deep Learning, Machine Learning, Engineering AI Solutions, NLP, Human-Aligned AI
-                  </p>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 relative overflow-hidden"
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -4 }}
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl" />
-                <span className="inline-block text-xs font-semibold text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
-                  Aug 2020 - Aug 2024
-                </span>
-                <h3 className="text-xl font-bold text-foreground mt-4 mb-2">
-                  Bachelor of Technology – Computer Science and Engineering
-                </h3>
-                <p className="text-primary font-semibold text-sm mb-4">
-                  Vellore Institute of Technology | Vellore, India
-                </p>
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-sm text-foreground font-medium">GPA:</span>
-                  <span className="text-sm text-primary font-bold">8.45 / 10</span>
-                </div>
-                <div className="space-y-3">
-                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Relevant Coursework</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Data Structures & Algorithms, AI, Software Engineering, Operating Systems, Database Management Systems, Cloud Computing
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Professional Memberships */}
-            <div className="mt-8">
-              <motion.div
-                className="p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
-              >
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                    <Users className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-bold text-foreground">Professional Memberships</h3>
-                </div>
-                <ul className="space-y-3">
-                  {[
-                    "Deakin University Student Association (DUSA)",
-                    "Deakin Data Science Club",
-                    "Google Developer Group (GDG) Melbourne",
-                    "Nepal Engineering Council – General Registered Engineer · Oct 2024 – Present"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
-                      <ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Volunteering Section */}
-      <section id="volunteering" className="py-24 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-4 mb-12">
-            <Heart className="w-6 h-6 text-primary" />
-            <h2 className="text-3xl font-bold text-foreground">Volunteering</h2>
-          </div>
-          <div className="grid lg:grid-cols-2 gap-6">
-            {volunteerExperiences.map((experience) => (
-              <motion.article
-                key={experience.company}
-                className="p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/50 transition-colors"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
-                    {experience.period}
-                  </span>
-                  <span className="text-xs text-muted-foreground flex items-center gap-1">
-                    <MapPin className="w-3 h-3" />
-                    {experience.location}
-                  </span>
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-1">{experience.title}</h3>
-                <p className="text-primary font-semibold text-sm mb-4">{experience.company}</p>
-                <ul className="space-y-3">
-                  {experience.highlights.map((highlight) => (
-                    <li key={highlight} className="flex gap-3 text-sm text-muted-foreground">
-                      <ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <span>{highlight}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.article>
+              </article>
             ))}
           </div>
-          <div className="mt-6 p-6 bg-card/50 rounded-2xl border border-border">
-            <h3 className="text-lg font-bold text-foreground mb-4">Earlier Community Involvement</h3>
-            <ul className="grid md:grid-cols-3 gap-4 text-sm text-muted-foreground">
-              {[
-                "COVID-19 Awareness Campaign – VIT University (2020)",
-                "SET Exhibition Volunteer – Bhaktapur, Nepal (2019)",
-                "Kathmandu World Debates Event Volunteer (2019)",
-              ].map((activity) => (
-                <li key={activity} className="flex items-start gap-3">
-                  <ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                  <span>{activity}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
+          <a
+            className="text-link"
+            href="https://github.com/Dipsan49"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <motion.div
-                className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-primary text-sm font-medium mb-6"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-              >
-                <Sparkles className="w-4 h-4" />
-                Get In Touch
-              </motion.div>
-              <h2 className="text-4xl font-bold text-foreground mb-4">{"Let's Connect"}</h2>
-              <p className="text-muted-foreground text-lg text-pretty leading-relaxed">
-                {
-                  "I'm always open to discussing new opportunities, AI research collaborations, or just having a chat about technology."
-                }
-              </p>
+            More on GitHub <ArrowUpRight size={16} />
+          </a>
+        </section>
+        <section id="experience" className="experience-section">
+          <div className="wrap section">
+            <SectionHeading
+              number="02"
+              label="THE JOURNEY"
+              title="Learning by building."
+              text="Across energy, research, financial technology and business automation."
+            />
+            <div className="experience-list">
+              {experiences.map((exp, i) => (
+                <details
+                  className="experience-row"
+                  key={`${exp.company}-${exp.title}`}
+                  open={i === 0}
+                >
+                  <summary>
+                    <span className="experience-index">0{i + 1}</span>
+                    <div className="experience-company">
+                      <h3>{exp.company}</h3>
+                      <span>{exp.title}</span>
+                    </div>
+                    <span className="experience-period">{exp.period}</span>
+                    <span className="expand-icon">
+                      <Plus className="plus" size={20} />
+                      <Minus className="minus" size={20} />
+                    </span>
+                  </summary>
+                  <div className="experience-body">
+                    <span className="location">
+                      <MapPin size={13} />
+                      {exp.location}
+                    </span>
+                    <ul>
+                      {exp.highlights.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </details>
+              ))}
             </div>
-
-            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <motion.a
-                href="mailto:dipsanbhattarai7@gmail.com"
-                className="group flex flex-col items-center p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 relative overflow-hidden"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -4 }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors relative">
-                  <Mail className="w-8 h-8 text-primary" />
-                </div>
-                <span className="text-foreground font-semibold text-lg mb-2 relative">Email</span>
-                <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors text-center relative">
-                  dipsanbhattarai7@gmail.com
-                </span>
-              </motion.a>
-
-              <motion.a
+          </div>
+        </section>
+        <section id="about" className="section wrap about-section">
+          <div className="portrait-column">
+            <div className="portrait">
+              <Image
+                src="/images/dipsan-profile.jpg"
+                alt="Dipsan Bhattarai"
+                fill
+                sizes="(max-width: 700px) 90vw, 38vw"
+                className="portrait-image"
+              />
+              <span className="portrait-sticker">
+                Curiosity
+                <br />
+                is the constant. <span>↗</span>
+              </span>
+            </div>
+            <div className="portrait-caption">
+              <span>BASED IN MELBOURNE</span>
+              <span>ALWAYS LEARNING ↗</span>
+            </div>
+          </div>
+          <div className="about-copy">
+            <div className="eyebrow">
+              <span>03</span> / THE HUMAN BEHIND THE CODE
+            </div>
+            <h2>
+              Technical by training.
+              <br />
+              <em>Curious by nature.</em>
+            </h2>
+            <p>
+              I’m a Computer Science graduate pursuing a Master of Applied
+              Artificial Intelligence (Professional) at Deakin University. With
+              nearly two years of hands-on experience across finance, research
+              and business automation, I bring analytical thinking and a
+              collaborative mindset to the things I build.
+            </p>
+            <p>
+              My research has explored LLM fine-tuning on edge devices,
+              privacy-preserving federated learning and multi-agent systems.
+              Today, I’m developing a RAG-powered assistant at PowerPlus Energy
+              to make battery installation knowledge easier to access.
+            </p>
+            <p>
+              I’m looking for a graduate role in software engineering, AI or
+              data where I can keep learning, improve processes and build
+              something useful.
+            </p>
+            <div className="about-links">
+              <a
                 href="https://linkedin.com/in/dipsanbhattarai"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 relative overflow-hidden"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -4 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors relative">
-                  <Linkedin className="w-8 h-8 text-primary" />
-                </div>
-                <span className="text-foreground font-semibold text-lg mb-2 relative">LinkedIn</span>
-                <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors relative">
-                  /in/dipsanbhattarai
-                </span>
-              </motion.a>
-              <motion.a
-                href="tel:+61422641487"
-                className="group flex flex-col items-center p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/50 transition-colors"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -4 }}
-              >
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <Phone className="w-8 h-8 text-primary" />
-                </div>
-                <span className="text-foreground font-semibold text-lg mb-2">Phone</span>
-                <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">
-                  +61 422 641 487
-                </span>
-              </motion.a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-8 border-t border-border/50 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} Dipsan Bhattarai. Built with passion.
-            </p>
-            <div className="flex items-center gap-3">
+                LinkedIn <ArrowUpRight size={15} />
+              </a>
               <a
                 href="https://github.com/Dipsan49"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 bg-card/50 border border-border rounded-lg text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
-                aria-label="GitHub"
               >
-                <Github className="w-5 h-5" />
-              </a>
-              <a
-                href="https://linkedin.com/in/dipsanbhattarai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 bg-card/50 border border-border rounded-lg text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a
-                href="mailto:dipsanbhattarai7@gmail.com"
-                className="p-2 bg-card/50 border border-border rounded-lg text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
-                aria-label="Email"
-              >
-                <Mail className="w-5 h-5" />
+                GitHub <ArrowUpRight size={15} />
               </a>
             </div>
+            <div className="interest-tags">
+              <span>Deep Learning</span>
+              <span>NLP</span>
+              <span>Computer Vision</span>
+              <span>Edge AI</span>
+            </div>
           </div>
-        </div>
+        </section>
+        <section id="skills" className="toolkit-section">
+          <div className="wrap section">
+            <SectionHeading
+              number="04"
+              label="THE TOOLKIT"
+              title="Different tools. One mindset."
+              text="Understand the problem. Choose the right tools. Make it work."
+            />
+            <div className="skills-grid">
+              {Object.entries(skills).map(([name, items], i) => (
+                <div className="skill-group" key={name}>
+                  <span className="skill-number">/ 0{i + 1}</span>
+                  <h3>{name}</h3>
+                  <p>
+                    {items.map((item, j) => (
+                      <span key={item}>
+                        {item}
+                        {j < items.length - 1 && <b> / </b>}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <details className="training-details">
+              <summary>
+                <span>
+                  {certifications.length} certifications & training courses
+                </span>
+                <span>
+                  KEEPING THE CURIOSITY ALIVE <Plus size={18} />
+                </span>
+              </summary>
+              <ul>
+                {certifications.map((cert) => (
+                  <li key={cert}>
+                    <Check size={15} />
+                    {cert}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </div>
+        </section>
+        <section id="education" className="section wrap">
+          <SectionHeading
+            number="05"
+            label="FOUNDATIONS"
+            title="A work in progress. Always."
+          />
+          <div className="education-grid">
+            <article>
+              <span className="eyebrow">EXPECTED COMPLETION · MAY 2027</span>
+              <h3>
+                Master of Applied
+                <br />
+                Artificial Intelligence <span>(Professional)</span>
+              </h3>
+              <p className="school">
+                Deakin University <ArrowUpRight size={17} />
+              </p>
+              <span className="location">Waurn Ponds, Geelong, VIC</span>
+              <p className="coursework">
+                Machine Learning · Deep Learning · Engineering AI Solutions ·
+                Natural Language Processing · Human-Aligned AI
+              </p>
+            </article>
+            <article>
+              <span className="eyebrow">AUG 2020 — AUG 2024</span>
+              <h3>
+                Bachelor of Technology
+                <br />
+                Computer Science and Engineering
+              </h3>
+              <p className="school">
+                Vellore Institute of Technology <ArrowUpRight size={17} />
+              </p>
+              <span className="location">Vellore, India · CGPA 8.45 / 10</span>
+              <p className="coursework">
+                Data Structures & Algorithms · Artificial Intelligence ·
+                Software Engineering · Operating Systems · Database Management
+                Systems · Cloud Computing
+              </p>
+            </article>
+          </div>
+          <details className="memberships">
+            <summary>
+              Professional memberships <Plus size={17} />
+            </summary>
+            <ul>
+              <li>
+                Nepal Engineering Council — General Registered Engineer · Oct
+                2024 – Present
+              </li>
+              <li>Deakin University Student Association (DUSA)</li>
+              <li>Deakin Data Science Club</li>
+              <li>Google Developer Group (GDG) Melbourne</li>
+            </ul>
+          </details>
+        </section>
+        <section id="volunteering" className="volunteer-section">
+          <div className="wrap section">
+            <SectionHeading
+              number="06"
+              label="GIVING BACK"
+              title="Beyond the day job."
+              text="Good work also means showing up for people."
+            />
+            <div className="volunteer-grid">
+              {volunteerExperiences.map((exp) => (
+                <article key={exp.company}>
+                  <span className="eyebrow">{exp.period}</span>
+                  <h3>{exp.company}</h3>
+                  <p className="volunteer-role">{exp.title}</p>
+                  <span className="location">{exp.location}</span>
+                  <ul>
+                    {exp.highlights.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+            <details className="memberships">
+              <summary>
+                Earlier community involvement <Plus size={17} />
+              </summary>
+              <ul>
+                <li>COVID-19 Awareness Campaign — VIT University (2020)</li>
+                <li>SET Exhibition Volunteer — Bhaktapur, Nepal (2019)</li>
+                <li>Kathmandu World Debates Event Volunteer (2019)</li>
+              </ul>
+            </details>
+          </div>
+        </section>
+        <section id="contact" className="contact-section">
+          <div className="wrap">
+            <div className="contact-top">
+              <span className="eyebrow">
+                HAVE AN OPPORTUNITY OR AN INTERESTING PROBLEM?
+              </span>
+              <span>
+                <i className="status-dot" /> LET’S CONNECT
+              </span>
+            </div>
+            <h2>
+              Great things start
+              <br />
+              with a{" "}
+              <a href="mailto:dipsanbhattarai7@gmail.com">
+                conversation.
+                <ArrowUpRight />
+              </a>
+            </h2>
+            <div className="contact-bottom">
+              <div className="email-row">
+                <a href="mailto:dipsanbhattarai7@gmail.com">
+                  dipsanbhattarai7@gmail.com
+                </a>
+                <button
+                  onClick={copyEmail}
+                  aria-label={copied ? "Email copied" : "Copy email address"}
+                >
+                  {copied ? <Check size={17} /> : <Copy size={17} />}
+                </button>
+                <span role="status" className="copy-status">
+                  {copied ? "Copied!" : ""}
+                </span>
+              </div>
+              <a href="tel:+61422641487" className="phone-link">
+                +61 422 641 487 <ArrowUpRight size={15} />
+              </a>
+              <div className="social-links">
+                <a
+                  href="https://github.com/Dipsan49"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                >
+                  <Github size={20} />
+                </a>
+                <a
+                  href="https://linkedin.com/in/dipsanbhattarai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin size={20} />
+                </a>
+                <a href="mailto:dipsanbhattarai7@gmail.com" aria-label="Email">
+                  <Mail size={20} />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer className="site-footer wrap">
+        <a className="wordmark" href="#">
+          dipsan<span>✳</span>
+        </a>
+        <span>© {new Date().getFullYear()} Dipsan Bhattarai</span>
+        <a href="#">
+          Back to top <ArrowUpRight size={15} />
+        </a>
       </footer>
-    </div>
+    </>
   );
 }
