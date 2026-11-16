@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import {
   ArrowUpRight,
   ArrowDown,
@@ -444,17 +443,6 @@ export default function Portfolio() {
           </a>
         </section>
         <section id="about" className="section wrap about-section">
-          <div className="portrait-column">
-            <div className="portrait">
-              <Image
-                src="/images/dipsan-profile.jpg"
-                alt="Dipsan Bhattarai"
-                fill
-                sizes="(max-width: 700px) 90vw, 38vw"
-                className="portrait-image"
-              />
-            </div>
-          </div>
           <div className="about-copy">
             <div className="eyebrow">
               <span>03</span> / ABOUT ME

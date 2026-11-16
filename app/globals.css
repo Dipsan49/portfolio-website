@@ -2091,3 +2091,11 @@ ul.responsibility-list > li {
     gap: 8px;
   }
 }
+
+/* Text-only About section. */
+.about-section {
+  display: block;
+}
+.about-copy {
+  max-width: 850px;
+}
