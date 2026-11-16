@@ -2056,3 +2056,37 @@ ul.responsibility-list > li {
     padding: 4px;
   }
 }
+
+.company-role {
+  margin-top: 28px;
+  border-left: 2px solid #cbdc9f;
+  padding: 0 0 4px 20px;
+}
+.company-role + .company-role {
+  margin-top: 32px;
+}
+.company-role-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.company-role-heading h4 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+}
+.company-role-heading > span {
+  color: var(--muted);
+  font-size: 13px;
+}
+@media (max-width: 760px) {
+  .company-role {
+    padding-left: 14px;
+  }
+  .company-role-heading {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

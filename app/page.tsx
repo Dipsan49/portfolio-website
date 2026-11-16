@@ -35,6 +35,20 @@ const links = [
   ["Volunteering", "volunteering"],
 ];
 
+const experienceGroups = experiences.reduce<
+  { company: string; location: string; roles: (typeof experiences)[number][] }[]
+>((groups, experience) => {
+  const group = groups.find((item) => item.company === experience.company);
+  if (group) group.roles.push(experience);
+  else
+    groups.push({
+      company: experience.company,
+      location: experience.location,
+      roles: [experience],
+    });
+  return groups;
+}, []);
+
 function SectionHeading({
   number,
   label,
@@ -306,10 +320,10 @@ export default function Portfolio() {
         </section>
         <div className="current-strip">
           <div className="wrap">
-            <span className="eyebrow">CURRENTLY BUILDING</span>
+            <span className="eyebrow">CURRENTLY WORKING AT</span>
             <p>
-              Making battery knowledge conversational <ArrowUpRight size={17} />
               <strong>PowerPlus Energy</strong>
+              <span>as an AI Development Intern</span>
             </p>
             <span className="strip-date">NOV 2026 — PRESENT</span>
           </div>
@@ -323,19 +337,27 @@ export default function Portfolio() {
               text="Across energy, research, financial technology and business automation."
             />
             <div className="experience-list">
-              {experiences.map((exp, i) => (
+              {experienceGroups.map((group, i) => (
                 <details
                   className="experience-row"
-                  key={`${exp.company}-${exp.title}`}
+                  key={group.company}
                   open={i === 0}
                 >
                   <summary>
                     <span className="experience-index">0{i + 1}</span>
                     <div className="experience-company">
-                      <h3>{exp.company}</h3>
-                      <span>{exp.title}</span>
+                      <h3>{group.company}</h3>
+                      <span>
+                        {group.roles.length === 1
+                          ? group.roles[0].title
+                          : `${group.roles.length} roles`}
+                      </span>
                     </div>
-                    <span className="experience-period">{exp.period}</span>
+                    <span className="experience-period">
+                      {group.roles.length === 1
+                        ? group.roles[0].period
+                        : `${group.roles[group.roles.length - 1].period.split(" – ")[0]} – ${group.roles[0].period.split(" – ")[1]}`}
+                    </span>
                     <span className="expand-icon">
                       <Plus className="plus" size={20} />
                       <Minus className="minus" size={20} />
@@ -344,9 +366,24 @@ export default function Portfolio() {
                   <div className="experience-body">
                     <span className="location">
                       <MapPin size={13} />
-                      {exp.location}
+                      {group.location}
                     </span>
-                    <ResponsibilityList items={exp.highlights} />
+                    {group.roles.map((role) => (
+                      <div
+                        className={
+                          group.roles.length > 1 ? "company-role" : undefined
+                        }
+                        key={role.title}
+                      >
+                        {group.roles.length > 1 && (
+                          <div className="company-role-heading">
+                            <h4>{role.title}</h4>
+                            <span>{role.period}</span>
+                          </div>
+                        )}
+                        <ResponsibilityList items={role.highlights} />
+                      </div>
+                    ))}
                   </div>
                 </details>
               ))}
