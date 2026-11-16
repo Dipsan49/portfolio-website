@@ -15,7 +15,7 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: 'Dipsan Bhattarai | AI Engineer & Researcher',
-  description: 'Computer Science graduate pursuing Masters in Applied AI at Deakin University. Experienced in LLMs, Federated Learning, and full-stack development.',
+  description: 'Master of Applied AI student at Deakin University and AI Development Intern at PowerPlus Energy. Experience in RAG, LLMs, federated learning and full-stack development.',
   keywords: ['AI Engineer', 'Machine Learning', 'Software Developer', 'Python', 'LLM', 'Deep Learning'],
   authors: [{ name: 'Dipsan Bhattarai' }],
   openGraph: {

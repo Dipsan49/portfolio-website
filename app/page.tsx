@@ -8,6 +8,7 @@ import {
   Linkedin,
   Mail,
   MapPin,
+  Phone,
   Menu,
   X,
   ChevronRight,
@@ -32,10 +33,75 @@ const navItems = [
   { label: "Projects", href: "#projects" },
   { label: "Skills", href: "#skills" },
   { label: "Education", href: "#education" },
+  { label: "Volunteering", href: "#volunteering" },
   { label: "Contact", href: "#contact" },
 ];
 
 const experiences = [
+  {
+    title: "AI Development Intern",
+    company: "PowerPlus Energy",
+    location: "Scoresby, Melbourne",
+    period: "Nov 2026 – Present",
+    highlights: [
+      "Developing PowerPlus Energy AI Assist, a chatbot that helps the public and electricians find answers in a 1,000-page battery setup and installation manual using plain language",
+      "Building a Retrieval-Augmented Generation (RAG) pipeline with Qdrant to retrieve relevant manual passages, usually using a locally hosted language model served via Ollama",
+      "Developing a FastAPI backend served with Uvicorn for the chat service and a back-office interface for non-technical staff, improving response quality through prompt engineering and context-window management",
+    ],
+  },
+  {
+    title: "Casual Research Assistant",
+    company: "Deakin University",
+    location: "Burwood, VIC",
+    period: "Nov 2025 – Oct 2026",
+    highlights: [
+      "Conducting research on fine-tuning Large Language Models (LLMs) on edge devices for efficient on-device AI inference",
+      "Investigating Federated Learning frameworks for privacy-preserving, decentralised model training",
+      "Applying optimisation strategies to enhance model performance on resource-constrained hardware",
+      "Developed and tested Federated Learning systems in Python and PyTorch using Llama and T5, training models across devices without sharing raw data",
+      "Fine-tuned LLMs using Low-Rank Adaptation (LoRA) with spectral control to stabilise model updates, achieving improvements over baseline methods",
+      "Designed a multi-agent data visualisation framework with agents for analysis, chart creation and review, using primal-dual optimisation to select agents while penalising costly choices",
+    ],
+  },
+  {
+    title: "Software Engineer Intern",
+    company: "Deakin Applied Artificial Intelligence Initiative (A2I2)",
+    location: "Burwood, VIC",
+    period: "Nov 2025 – Feb 2026",
+    highlights: [
+      "Built an Email Tone Polisher with Microsoft PowerApps and Power Automate, designing automated workflows with low-code pipeline blocks",
+      "Developed user-facing interfaces in Microsoft PowerApps for non-technical staff",
+      "Utilised AI-assisted development tools including Claude Code, OpenAI Codex, and Vercel v0",
+      "Connected SharePoint storage and external services through REST APIs, validating integrations with Postman",
+      "Prototyped responsive interfaces with Claude Code/Cowork, OpenAI Codex and Vercel v0",
+    ],
+  },
+  {
+    title: "AI Developer",
+    company: "F1Soft International",
+    location: "Lalitpur, Nepal",
+    period: "Jan 2025 – Jun 2025",
+    highlights: [
+      "Developed a RAG chatbot for a multinational digital banking platform using Qwen, Qdrant and prompt engineering to answer from trusted FAQs and product documents",
+      "Built an intent classifier covering about 20 customer request types, achieving over 90% recall on every intent through confusion-matrix evaluation",
+      "Implemented Python and Django REST Framework APIs for mobile applications and the back-office system",
+      "Managed CI/CD pipelines via Jenkins, Rancher, and ArgoCD",
+    ],
+  },
+  {
+    title: "AI Intern",
+    company: "F1Soft International",
+    location: "Lalitpur, Nepal",
+    period: "Nov 2024 – Jan 2025",
+    highlights: [
+      "Developed a Python pipeline using PaddleOCR to extract multi-page Nepali bank statements with over 94% text extraction accuracy",
+      "Structured extracted text for fraud-detection analysis of payment descriptions and regular or irregular transaction amounts",
+      "Evaluated YOLO models for document detection and built Flask REST APIs and Streamlit interfaces for team testing and demonstrations",
+    ],
+  },
+];
+
+const volunteerExperiences = [
   {
     title: "Full Stack and AI Engineering Intern",
     company: "PropApp Trading Pvt. Ltd",
@@ -49,48 +115,13 @@ const experiences = [
     ],
   },
   {
-    title: "Research Assistant",
-    company: "Deakin University",
-    location: "Burwood, VIC",
-    period: "Nov 2025 – Present",
+    title: "Thursday Trolley Volunteer",
+    company: "Deakin University Student Association (DUSA)",
+    location: "Geelong, VIC",
+    period: "Oct 2025 – Dec 2025",
     highlights: [
-      "Conducting research on fine-tuning Large Language Models (LLMs) on edge devices for efficient on-device AI inference",
-      "Investigating Federated Learning frameworks for privacy-preserving, decentralised model training",
-      "Applying optimisation strategies to enhance model performance on resource-constrained hardware",
-    ],
-  },
-  {
-    title: "Software Engineer Intern",
-    company: "Deakin Applied AI Institute (A2I2)",
-    location: "Burwood, VIC",
-    period: "Nov 2025 – Feb 2026",
-    highlights: [
-      "Designed enterprise workflow automation pipelines using Microsoft Power Automate",
-      "Developed user-facing interfaces in Microsoft PowerApps for non-technical staff",
-      "Utilised AI-assisted development tools including Claude Code, OpenAI Codex, and Vercel v0",
-      "Engineered and validated REST APIs for Power Automate integration with external services",
-    ],
-  },
-  {
-    title: "AI Developer",
-    company: "F1Soft International",
-    location: "Lalitpur, Nepal",
-    period: "Jan 2025 – Jun 2025",
-    highlights: [
-      "Developed intent classification system for customer service chatbot using RAG",
-      "Improved model recall through systematic evaluation using confusion matrices",
-      "Implemented backend services with Python and Django REST Framework",
-      "Managed CI/CD pipelines via Jenkins, Rancher, and ArgoCD",
-    ],
-  },
-  {
-    title: "AI Intern",
-    company: "F1Soft International",
-    location: "Lalitpur, Nepal",
-    period: "Nov 2024 – Jan 2025",
-    highlights: [
-      "Developed multi-page bank statement parser using PaddleOCR for fraud detection",
-      "Built computer vision models using YOLO for object detection tasks",
+      "Handed out free snacks and drinks to students every Thursday evening in the Waterfront and Waurn Ponds campus libraries",
+      "Worked with fellow volunteers to set up, serve and pack down the trolley, return equipment and tidy leftover supplies",
     ],
   },
 ];
@@ -134,19 +165,21 @@ const projects = [
 ];
 
 const skills = {
-  Languages: ["Python", "Java", "JavaScript", "C/C++"],
-  Frameworks: ["Django REST", "Flask", "Streamlit", "PyTorch", "LangChain", "LangFuse"],
-  "AI Tools": ["Claude Code", "OpenAI Codex", "Vercel v0", "Bolt.dev"],
+  Languages: ["Python", "SQL", "Java", "JavaScript", "C/C++"],
+  Frameworks: ["Django REST", "FastAPI", "Uvicorn", "Flask", "Streamlit", "PyTorch", "pandas", "NumPy", "LangChain", "LangFuse"],
+  "AI Tools": ["Claude Code/Cowork", "OpenAI Codex", "Vercel v0", "Bolt.dev", "Ollama"],
   "Cloud & DevOps": ["Microsoft Azure", "GCP", "Rancher", "Jenkins", "ArgoCD"],
+  "AI & Machine Learning": ["Machine Learning", "Generative AI", "RAG", "LLM Fine-tuning", "LoRA", "Federated Learning", "PaddleOCR", "YOLO"],
   Databases: ["MySQL", "PostgreSQL", "Redis", "Qdrant"],
-  Platforms: ["Power Automate", "PowerApps", "Git/GitLab", "Agile/Scrum"],
+  Platforms: ["Power Automate", "PowerApps", "Git/GitHub/GitLab", "Postman", "Figma", "Agile/Scrum"],
 };
 
 const certifications = [
-  "Microsoft Certified: Azure AI Fundamentals",
-  "Machine Learning Specialization – DeepLearning.AI / Stanford",
-  "Java Development on Oracle Cloud – Oracle",
-  "Google Cloud Fundamentals: Core Infrastructure",
+  "Figma Essential Training – LinkedIn Learning · Aug 2026",
+  "Microsoft Certified: Azure AI Fundamentals (Exam AI-901) · May 2026",
+  "Machine Learning Specialization – DeepLearning.AI / Stanford · Jan 2024",
+  "Java Development on Oracle Cloud – Oracle · Sept 2023",
+  "Google Cloud Fundamentals: Core Infrastructure · July 2022",
   "High Performance Coding Training – Iamneo",
   "MFL Coding Bootcamp – MFL EduClub",
   "Ethical Hacking Training – Laba Institute",
@@ -203,7 +236,7 @@ export default function Portfolio() {
             </motion.a>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-4 lg:gap-8">
               {navItems.map((item, index) => (
                 <motion.a
                   key={item.href}
@@ -307,7 +340,7 @@ export default function Portfolio() {
                 <span className="text-primary font-medium">
                   Master of Applied Artificial Intelligence
                 </span>{" "}
-                at Deakin University. Building AI systems that create meaningful, responsible impact.
+                at Deakin University, with nearly two years of hands-on experience building AI and data solutions across finance, research and business automation.
               </motion.p>
 
               <motion.div
@@ -425,18 +458,22 @@ export default function Portfolio() {
               <div className="lg:col-span-2 space-y-6">
                 <p className="text-muted-foreground leading-relaxed text-lg text-pretty">
                   I am a Computer Science graduate currently pursuing my Master of Applied
-                  Artificial Intelligence from Deakin University. With internship and traineeship
-                  experience across software engineering and applied AI research, I bring strong
-                  analytical thinking and a collaborative mindset.
+                  Artificial Intelligence (Professional) at Deakin University. With nearly two years
+                  of hands-on experience across finance, research and business automation, I bring
+                  strong analytical thinking, problem-solving skills and a collaborative mindset.
                 </p>
                 <p className="text-muted-foreground leading-relaxed text-lg text-pretty">
-                  My current research focuses on{" "}
+                  My research experience includes{" "}
                   <span className="text-primary font-medium">
                     fine-tuning Large Language Models on edge devices
                   </span>{" "}
                   and investigating{" "}
                   <span className="text-primary font-medium">Federated Learning frameworks</span>{" "}
-                  for privacy-preserving, decentralised model training.
+                  for privacy-preserving, decentralised model training. I now develop a RAG-powered AI assistant at PowerPlus Energy to make battery installation guidance easier to access.
+                </p>
+                <p className="text-muted-foreground leading-relaxed text-lg text-pretty">
+                  I am seeking a graduate role in software engineering, AI or data where I can
+                  build intelligent systems, improve processes and deliver meaningful results.
                 </p>
                 <div className="flex flex-wrap gap-3 pt-4">
                   {["Machine Learning", "Deep Learning", "NLP", "Computer Vision", "Edge AI"].map((tag, i) => (
@@ -477,7 +514,7 @@ export default function Portfolio() {
                     </div>
                     <span className="text-foreground font-semibold">Certifications</span>
                   </div>
-                  <p className="text-muted-foreground pl-13">7+ Professional Certifications</p>
+                  <p className="text-muted-foreground pl-13">{certifications.length} Certifications & Training Courses</p>
                 </motion.div>
               </div>
             </div>
@@ -732,13 +769,13 @@ export default function Portfolio() {
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl" />
                 <span className="inline-block text-xs font-semibold text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
-                  Jul 2025 - Jul 2027 (Expected)
+                  Expected completion: May 2027
                 </span>
                 <h3 className="text-xl font-bold text-foreground mt-4 mb-2">
-                  Master of Applied Artificial Intelligence
+                  Master of Applied Artificial Intelligence (Professional)
                 </h3>
                 <p className="text-primary font-semibold text-sm mb-4">
-                  Deakin University | Geelong, VIC
+                  Deakin University | Waurn Ponds, Geelong, VIC
                 </p>
                 <div className="space-y-3">
                   <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Relevant Coursework</p>
@@ -761,7 +798,7 @@ export default function Portfolio() {
                   Aug 2020 - Aug 2024
                 </span>
                 <h3 className="text-xl font-bold text-foreground mt-4 mb-2">
-                  Bachelor of Technology - Computer Science
+                  Bachelor of Technology – Computer Science and Engineering
                 </h3>
                 <p className="text-primary font-semibold text-sm mb-4">
                   Vellore Institute of Technology | Vellore, India
@@ -773,14 +810,14 @@ export default function Portfolio() {
                 <div className="space-y-3">
                   <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Relevant Coursework</p>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Data Structures & Algorithms, AI, Software Engineering, OS, DBMS
+                    Data Structures & Algorithms, AI, Software Engineering, Operating Systems, Database Management Systems, Cloud Computing
                   </p>
                 </div>
               </motion.div>
             </div>
 
-            {/* Memberships & Volunteering */}
-            <div className="grid md:grid-cols-2 gap-6 mt-8">
+            {/* Professional Memberships */}
+            <div className="mt-8">
               <motion.div
                 className="p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border"
                 initial={{ opacity: 0, y: 20 }}
@@ -799,35 +836,7 @@ export default function Portfolio() {
                     "Deakin University Student Association (DUSA)",
                     "Deakin Data Science Club",
                     "Google Developer Group (GDG) Melbourne",
-                    "Nepal Engineering Council (Registered Engineer)"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
-                      <ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-
-              <motion.div
-                className="p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
-              >
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                    <Heart className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-bold text-foreground">Volunteering</h3>
-                </div>
-                <ul className="space-y-3">
-                  {[
-                    "DUSA Thursday Trolley Volunteer (2025 - Present)",
-                    "COVID-19 Awareness Campaign - VIT University (2020)",
-                    "SET Exhibition Volunteer - Bhaktapur, Nepal (2019)",
-                    "Kathmandu World Debates Event Volunteer (2019)"
+                    "Nepal Engineering Council – General Registered Engineer · Oct 2024 – Present"
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
                       <ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
@@ -838,6 +847,62 @@ export default function Portfolio() {
               </motion.div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Volunteering Section */}
+      <section id="volunteering" className="py-24 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-4 mb-12">
+            <Heart className="w-6 h-6 text-primary" />
+            <h2 className="text-3xl font-bold text-foreground">Volunteering</h2>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-6">
+            {volunteerExperiences.map((experience) => (
+              <motion.article
+                key={experience.company}
+                className="p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/50 transition-colors"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                  <span className="text-xs font-semibold text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
+                    {experience.period}
+                  </span>
+                  <span className="text-xs text-muted-foreground flex items-center gap-1">
+                    <MapPin className="w-3 h-3" />
+                    {experience.location}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-1">{experience.title}</h3>
+                <p className="text-primary font-semibold text-sm mb-4">{experience.company}</p>
+                <ul className="space-y-3">
+                  {experience.highlights.map((highlight) => (
+                    <li key={highlight} className="flex gap-3 text-sm text-muted-foreground">
+                      <ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.article>
+            ))}
+          </div>
+          <div className="mt-6 p-6 bg-card/50 rounded-2xl border border-border">
+            <h3 className="text-lg font-bold text-foreground mb-4">Earlier Community Involvement</h3>
+            <ul className="grid md:grid-cols-3 gap-4 text-sm text-muted-foreground">
+              {[
+                "COVID-19 Awareness Campaign – VIT University (2020)",
+                "SET Exhibition Volunteer – Bhaktapur, Nepal (2019)",
+                "Kathmandu World Debates Event Volunteer (2019)",
+              ].map((activity) => (
+                <li key={activity} className="flex items-start gap-3">
+                  <ChevronRight className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                  <span>{activity}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -868,7 +933,7 @@ export default function Portfolio() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               <motion.a
                 href="mailto:dipsanbhattarai7@gmail.com"
                 className="group flex flex-col items-center p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 relative overflow-hidden"
@@ -906,6 +971,22 @@ export default function Portfolio() {
                 <span className="text-foreground font-semibold text-lg mb-2 relative">LinkedIn</span>
                 <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors relative">
                   /in/dipsanbhattarai
+                </span>
+              </motion.a>
+              <motion.a
+                href="tel:+61422641487"
+                className="group flex flex-col items-center p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border hover:border-primary/50 transition-colors"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -4 }}
+              >
+                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Phone className="w-8 h-8 text-primary" />
+                </div>
+                <span className="text-foreground font-semibold text-lg mb-2">Phone</span>
+                <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors">
+                  +61 422 641 487
                 </span>
               </motion.a>
             </div>
