@@ -9,6 +9,7 @@ import {
   Minus,
   Github,
   Linkedin,
+  GraduationCap,
   Mail,
   Menu,
   X,
@@ -287,7 +288,7 @@ export default function Portfolio() {
           </div>
           <div className="hero-main">
             <div className="hero-copy">
-              <div className="eyebrow">AI Engineer & Researcher</div>
+              <div className="eyebrow">AI Engineer</div>
               <h1>
                 Dipsan
                 <br />
@@ -499,6 +500,13 @@ export default function Portfolio() {
               >
                 GitHub <ArrowUpRight size={15} />
               </a>
+              <a
+                href="https://scholar.google.com/citations?user=5qgtChEAAAAJ&hl=en&inst=7790070097503134188"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Google Scholar <ArrowUpRight size={15} />
+              </a>
             </div>
             <div className="interest-tags">
               <span>Deep Learning</span>
@@ -691,6 +699,15 @@ export default function Portfolio() {
                   aria-label="LinkedIn"
                 >
                   <Linkedin size={20} />
+                </a>
+                <a
+                  href="https://scholar.google.com/citations?user=5qgtChEAAAAJ&hl=en&inst=7790070097503134188"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Google Scholar"
+                  title="Google Scholar"
+                >
+                  <GraduationCap size={20} />
                 </a>
                 <a href="mailto:dipsanbhattarai7@gmail.com" aria-label="Email">
                   <Mail size={20} />

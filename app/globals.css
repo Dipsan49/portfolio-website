@@ -821,6 +821,7 @@ summary::-webkit-details-marker {
 }
 .about-links {
   display: flex;
+  flex-wrap: wrap;
   gap: 30px;
   margin-top: 26px;
 }
