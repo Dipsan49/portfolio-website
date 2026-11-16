@@ -280,9 +280,6 @@ export default function Portfolio() {
         <section className="hero wrap">
           <div className="hero-meta">
             <span>
-              <i className="status-dot" /> OPEN TO GRADUATE OPPORTUNITIES
-            </span>
-            <span>
               MELBOURNE, AUSTRALIA <span className="tiny-star">✳</span>
             </span>
           </div>
@@ -480,11 +477,6 @@ export default function Portfolio() {
               Today, I’m developing a RAG-powered assistant at PowerPlus Energy
               to make battery installation knowledge easier to access.
             </p>
-            <p>
-              I’m looking for a graduate role in software engineering, AI or
-              data where I can keep learning, improve processes and build
-              something useful.
-            </p>
             <div className="about-links">
               <a
                 href="https://linkedin.com/in/dipsanbhattarai"
@@ -650,7 +642,7 @@ export default function Portfolio() {
           <div className="wrap">
             <div className="contact-top">
               <span className="eyebrow">
-                HAVE AN OPPORTUNITY OR AN INTERESTING PROBLEM?
+                HAVE AN INTERESTING PROBLEM OR IDEA?
               </span>
               <span>
                 <i className="status-dot" /> LET’S CONNECT
