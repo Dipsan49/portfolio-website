@@ -653,11 +653,6 @@ summary:focus-visible {
   line-height: 1.9;
   color: var(--muted);
 }
-.concept-note {
-  font-size: 12px;
-  line-height: 1.6;
-  color: var(--muted);
-}
 summary {
   cursor: pointer;
   list-style: none;
@@ -1755,9 +1750,6 @@ ul.responsibility-list > li {
 .project-details {
   font-size: 14px;
   padding-top: 16px;
-}
-.concept-note {
-  font-size: 12px;
 }
 .about-copy > p {
   font-size: 15px;

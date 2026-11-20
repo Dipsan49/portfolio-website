@@ -424,10 +424,6 @@ export default function Portfolio() {
                       Inside the project <Plus size={14} />
                     </summary>
                     <ResponsibilityList items={project.highlights} />
-                    <p className="concept-note">
-                      Illustrative project visual above; not a product
-                      screenshot.
-                    </p>
                   </details>
                 </div>
               </article>
